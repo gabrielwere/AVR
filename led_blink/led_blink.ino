@@ -1,3 +1,4 @@
+//Blinks an led with a delay of 1s
 
 void setup() {
 

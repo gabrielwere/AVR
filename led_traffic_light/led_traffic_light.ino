@@ -1,3 +1,6 @@
+//Traffic lights simulator that blinks 3 LEDs each with a different delay time
+//An RGB LED can also be used instead of 3 separate LEDs
+
 int red_pin = 2;
 int yellow_pin = 3;
 int green_pin = 4;
