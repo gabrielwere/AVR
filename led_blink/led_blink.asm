@@ -1,3 +1,5 @@
+.include "m328Pdef.inc" ; include file for the ATMega328p chip
+
 sbi DDRD,2
 
 REPEAT:
