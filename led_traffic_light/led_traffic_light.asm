@@ -1,88 +1,83 @@
 .include "m328Pdef.inc" ; include file for the ATMega328p chip
 
-sbi DDRD,2
-sbi DDRD,3
-sbi DDRD,4
+.equ LED_1 = 2
+.equ LED_2 = 3
+.equ LED_3 = 4
+
+ldi r16,((1 << LED_1) | (1 << LED_2) | (1 << LED_3))
+out DDRD,r16
 
 REPEAT:
-sbi PORTD,2
+ldi r29,(1 << LED_1)
+out PORTD,r29
 call DELAY_3S
-cbi PORTD,2
 
-sbi PORTD,3
+ldi r30,(1 << LED_2)
+out PORTD,r30
 call DELAY_2S
-cbi PORTD,3
 
-sbi PORTD,4
+ldi r31,(1 << LED_3)
+out PORTD,r31
 call DELAY_1S
-cbi PORTD,4
 rjmp REPEAT
 
-;create a delay of ~1s
-DELAY_1S:
-ldi r16,30
-
-L1:
-ldi r17,255
-
-L2:
-ldi r18,255
-
-L3:
-nop
-nop
-dec r18
-brne L3
-
-dec r17
-brne L2
-
-dec r16
-brne L1
-ret
-
-;create a delay of ~2s
-DELAY_2S:
-ldi r16,45
-
-L4:
-ldi r17,255
-
-L5:
-ldi r18,255
-
-L6:
-nop
-nop
-dec r18
-brne L6
-
-dec r17
-brne L5
-
-dec r16
-brne L4
-ret
-
-;create a delay of ~3s
+;delay of ~ 3s
 DELAY_3S:
-ldi r16,65
+ldi r16,HIGH(65536-23438)
+sts TCNT1H,r16
+ldi r17,LOW(65536-23438)
+sts TCNT1L,r17
+ldi r18,0x00
+sts TCCR1A,r18
+ldi r19,0x05;pre-scaler of 1024,normal mode
+sts TCCR1B,r19
 
-L7:
-ldi r17,255
-
-L8:
-ldi r18,255
-
-L9:
-nop
-nop
-dec r18
-brne L9
-
-dec r17
-brne L8
-
-dec r16
-brne L7
+AGAIN_0:
+sbis TIFR1,TOV1
+rjmp AGAIN_0
+ldi r20,0x00
+sts TCCR1B,r20
+sts TCCR1A,r20
+sbi TIFR1,TOV1
 ret
+
+;delay of ~2s
+DELAY_2S:
+ldi r16,HIGH(65536-62500)
+sts TCNT1H,r16
+ldi r17,LOW(65536-62500)
+sts TCNT1L,r16
+ldi r18,0x00
+sts TCCR1A,r18
+ldi r19,0x04
+sts TCCR1B,r19;pre-scaler of 256,normal mode
+
+AGAIN_1:
+sbis TIFR1,TOV1
+rjmp AGAIN_1
+ldi r20,0x00
+sts TCCR1B,r20
+sts TCCR1A,r20
+sbi TIFR1,TOV1
+ret
+
+;delay of ~1s
+DELAY_1S:
+ldi r16,HIGH(65536-31250)
+sts TCNT1H,r16
+ldi r17,LOW(65536-31250)
+sts TCNT1L,r17
+ldi r18,0x00
+sts TCCR1A,r18
+ldi r19,0x04
+sts TCCR1B,r19;pre-scaler of 256,normal mode
+
+AGAIN_2:
+sbis TIFR1,TOV1
+rjmp AGAIN_1
+ldi r20,0x00
+sts TCCR1B,r20
+sts TCCR1A,r20
+sbi TIFR1,TOV1
+ret
+
