@@ -3,14 +3,15 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#define LED_PIN 2 
 int main(void){
 	
-	DDRD |= 0b00000100;
+	DDRD |= (1 << LED_PIN);
 	
 	while(1){
-		PORTD |= 0b00000100;
+		PORTD |= (1 << LED_PIN);
 		_delay_ms(1000);
-		PORTD &= 0b11111011;
+		PORTD &= ~(1 << LED_PIN);
 		_delay_ms(1000);
 	}
 	
