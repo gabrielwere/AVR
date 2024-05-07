@@ -46,7 +46,7 @@ DELAY_2S:
 ldi r16,HIGH(65536-62500)
 sts TCNT1H,r16
 ldi r17,LOW(65536-62500)
-sts TCNT1L,r16
+sts TCNT1L,r17
 ldi r18,0x00
 sts TCCR1A,r18
 ldi r19,0x04
