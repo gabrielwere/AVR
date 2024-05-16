@@ -16,9 +16,9 @@ ldi r16,(1 << TOIE1)
 sts TIMSK1,r16
 sei;global interrupt enable 
 
-ldi r17,HIGH(65536-31250)
+ldi r17,HIGH(65536-62500)
 sts TCNT1H,r17
-ldi r18,LOW(65536-31250)
+ldi r18,LOW(65536-62500)
 sts TCNT1L,r18
 
 ldi r19,0x00
@@ -35,8 +35,8 @@ ldi r17,0x04
 eor r16,r17
 out PORTD,r16
 
-ldi r17,HIGH(65536-31250)
+ldi r17,HIGH(65536-62500)
 sts TCNT1H,r17
-ldi r18,LOW(65536-31250)
+ldi r18,LOW(65536-62500)
 sts TCNT1L,r18
 reti

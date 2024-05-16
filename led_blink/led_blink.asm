@@ -11,9 +11,9 @@ rjmp REPEAT
 
 ;create a delay of ~ 1 sec
 DELAY:
-ldi r16,HIGH(65536-31250); or could be 0x85
+ldi r16,HIGH(65536-62500); or could be 0x85
 sts TCNT1H,r16
-ldi r17,LOW(65536-31250);or could be 0xee
+ldi r17,LOW(65536-62500);or could be 0xee
 sts TCNT1L,r17
 ldi r18,0x00
 sts TCCR1A,r18

@@ -23,9 +23,9 @@ rjmp REPEAT
 
 ;delay of ~ 3s
 DELAY_3S:
-ldi r16,HIGH(65536-23438)
+ldi r16,HIGH(65536-46875)
 sts TCNT1H,r16
-ldi r17,LOW(65536-23438)
+ldi r17,LOW(65536-46875)
 sts TCNT1L,r17
 ldi r18,0x00
 sts TCCR1A,r18
@@ -43,14 +43,14 @@ ret
 
 ;delay of ~2s
 DELAY_2S:
-ldi r16,HIGH(65536-62500)
+ldi r16,HIGH(65536-31250)
 sts TCNT1H,r16
-ldi r17,LOW(65536-62500)
+ldi r17,LOW(65536-31250)
 sts TCNT1L,r17
 ldi r18,0x00
 sts TCCR1A,r18
-ldi r19,0x04
-sts TCCR1B,r19;pre-scaler of 256,normal mode
+ldi r19,0x05
+sts TCCR1B,r19;pre-scaler of 1024,normal mode
 
 AGAIN_1:
 sbis TIFR1,TOV1
@@ -63,9 +63,9 @@ ret
 
 ;delay of ~1s
 DELAY_1S:
-ldi r16,HIGH(65536-31250)
+ldi r16,HIGH(65536-62500)
 sts TCNT1H,r16
-ldi r17,LOW(65536-31250)
+ldi r17,LOW(65536-62500)
 sts TCNT1L,r17
 ldi r18,0x00
 sts TCCR1A,r18
@@ -80,4 +80,3 @@ sts TCCR1B,r20
 sts TCCR1A,r20
 sbi TIFR1,TOV1
 ret
-
