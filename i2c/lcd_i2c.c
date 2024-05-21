@@ -32,6 +32,7 @@ void lcd_pulse(unsigned char data,int status);
 int main(void){
 
 	//boot delay
+	//should be greater than 15ms
 	_delay_ms(17);
 	TWI_INIT();
 	TWI_START();
@@ -41,9 +42,11 @@ int main(void){
 
 
 	send_4_bit_command(0x30);
+	//should be greater than 4.1ms
 	_delay_ms(6);
 
 	send_4_bit_command(0x30);
+	//should be greater than 100us
 	_delay_us(120);
 
 	send_4_bit_command(0x30);
@@ -55,10 +58,14 @@ int main(void){
 	send_8_bit_command(0x28);
 	_delay_us(120);
 
+	//clear screen command
 	send_8_bit_command(0x01);
 	_delay_us(120);
 
+	//cursor home command
 	send_8_bit_command(0x02);
+
+	//display on,cursor off
 	send_8_bit_command(0x0e);
 
 	unsigned char str1[] = "Hello";
@@ -72,6 +79,7 @@ int main(void){
 		i++;
 	}
 
+	//force cursor to beginning of second row
 	send_8_bit_command(0xc0);
 
 	while(str2[j] != '\0'){
@@ -146,13 +154,13 @@ void send_8_bit_data(unsigned char data){
 	lcd_pulse(lower_nibble,SEND_DATA);
 }
 
+//turn enable pin high to low,with a delay > 450ns in between
 void lcd_pulse(unsigned char data,int status){
 
 	//if sending a command do not turn on RS pin
 	if(status == SEND_COMMAND){
 
-		data |= PIN_EN;
-		TWI_SEND(data);
+		TWI_SEND(data | PIN_EN);
 		_delay_us(0.5);
 
 		//make sure enable pin,rs pin and r/w pin are off because we are sending a command
@@ -162,8 +170,7 @@ void lcd_pulse(unsigned char data,int status){
 
 	}else if(status == SEND_DATA){
 
-		data |= (PIN_EN | PIN_RS | PIN_P3);
-		TWI_SEND(data);
+		TWI_SEND(data | (PIN_EN | PIN_RS | PIN_P3));
 		_delay_ms(0.5);
 
 		//turn off enable and r/w pin
